@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <title>Amplitude Studentizada</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Till Duo">
+</head>
+
+<body>
+    <h1>Amplitude Studentizada</h1>
+
+    <div>
+        <form action="{% url 'create_table' %}" id="create_table" name="create_table">
+            {% csrf_token %}
+            <label for="inicio">Inicio</label>
+            <table id="inicio" border="1">
+                <tr>
+                    <td>Tratamentos (k)</td>
+                    <td><input type="number" id="k" name="k" min="0" value="{{ k }}" style="border: 0; text-align: center;"></td>
+                </tr>
+                <tr>
+                    <td>Repetições (n)</td>
+                    <td><input type="number" id="n" name="n" min="0" value="{{ n }}" style="border: 0; text-align: center;"></td>
+                </tr>
+                <tr>
+                    <td>Alfa</td>
+                    <td><input type="text" id="alfa" name="alfa" value="{{ alfa }}" style="border: 0; text-align: center;"></td>
+                </tr>
+                {% for item in items %}
+                <tr>
+                    <td>GL{{ forloop.counter }}</td>
+                    <td><label>{{ item }}</label></td>
+                </tr>
+                {% endfor %}
+            </table>
+            <input type="submit" value="Gerar tabela de tratamentos">
+        </form>
+    </div>
+    
+    <br>
+
+    <div>
+        <form action="{% url 'calcule_average' %}" id="calcule_average">
+            {% csrf_token %}
+            <label for="teste">Tratamentos</label>
+            <table id="teste">
+                {% for row in list %}
+                <tr>
+                    {% for cell in row %}
+                    {% if forloop.first or forloop.parentloop.first %}
+                    <th>
+                        {% else %}
+                    <td>
+                        {% endif %}
+                        {{ cell }}
+                        {% if forloop.first or forloop.parentloop.first %}
+                        </th>
+                        {% else %}
+
+                        <input type="number"
+                            id="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
+                            name="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
+                            style="width: 50px; text-align: center;">
+                    </td>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+                <tr>
+                    <th>Média</th>
+                    {% for average in averages %}
+                    <td>{{ average }}</td>
+                    {% endfor %}
+                </tr>
+
+            </table>
+            <input type="submit" value="Calcular médias">
+        </form>
+    </div>
+
+    <!--testando ajax-->
+    <!--script src="{% static 'js/scripts.js' %}"></script-->
+</body>
+
+</html>
