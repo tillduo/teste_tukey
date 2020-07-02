@@ -35,19 +35,20 @@ def create_table(request):
 
 def calcule_average(request):
     repetitions = np.full((n, k), None)
-    average = np.full((k, 1), 0)
+    average = np.full((k, 1), float(0))
 
     for j in range(n):
         for i in range(k):
             cell = 'cell_' + str(j) + '_' + str(i)
-            repetitions = int(request.GET[cell])
-            average[i] += int(request.GET[cell])
+            
+            repetitions = float(request.GET[cell])
+            average[i] = (float(average[i]) + float(request.GET[cell]))
 
     for i in range(k):
-        average[i] = average[i] / n
+        average[i] = (float(average[i]) / n)
 
     data = {
-        'table' : repetitions,
+        'table': repetitions,
         'averages': average
     }
 
