@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import numpy as np
+import statistics as st
 
 # Global variable
 k = None
@@ -35,23 +36,35 @@ def create_table(request):
 
 def calcule_average(request):
     repetitions = np.full((n, k), None)
-    entry_data = np.full((k, 1), float(0))
+    entry_data_average = np.full((k, 1), float(0))
+    entry_data_variance = np.full((k, 1), float(0))
     average = np.full((k, 1), float(0))
     variance = np.full((k, 1), float(0))
 
+    # calcula a média
     for j in range(n):
         for i in range(k):
             cell = 'cell_' + str(j) + '_' + str(i)
             
             repetitions = float(request.GET[cell])
-            entry_data[i] = (float(entry_data[i]) + float(request.GET[cell]))
+            entry_data_average[i] = (float(entry_data_average[i]) + float(request.GET[cell]))
 
     for i in range(k):
-        average[i] = np.average(float(entry_data[i]))
+        average[i] = (float(entry_data_average[i]) / n)
+
+
+    # calcula a variância
+    for j in range(n):
+        for i in range(k):
+            cell = 'cell_' + str(j) + '_' + str(i)
+            
+            float(request.GET[cell])
+            entry_data_variance[i] = (float(entry_data_variance) + float((average[i] - float(request.GET[cell])) * (average[i] - float(request.GET[cell]))))    
 
     for i in range(k):
-        variance[i] = np.var(float(entry_data[i]))
+        variance[i] = (float(entry_data_variance[i]) / (n-1))
 
+    # retorna os dados
     data = {
         'table': repetitions,
         'averages': average,
