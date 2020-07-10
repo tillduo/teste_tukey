@@ -40,6 +40,7 @@ def calcule_average(request):
     entry_data_variance = np.full((k, 1), float(0))
     average = np.full((k, 1), float(0))
     variance = np.full((k, 1), float(0))
+    mq_in = float(0)
 
     # calcula a média
     for j in range(n):
@@ -58,17 +59,24 @@ def calcule_average(request):
         for i in range(k):
             cell = 'cell_' + str(j) + '_' + str(i)
             
-            float(request.GET[cell])
-            entry_data_variance[i] = (float(entry_data_variance) + float((average[i] - float(request.GET[cell])) * (average[i] - float(request.GET[cell]))))    
+            entry_data_variance[i] = (float(entry_data_variance[i]) + float((float(request.GET[cell]) - float(average[i])) * (float(request.GET[cell]) - float(average[i]))))
+
 
     for i in range(k):
         variance[i] = (float(entry_data_variance[i]) / (n-1))
 
+    # calcula mq_dentro
+    for i in range(k):
+        mq_in = mq_in + float(variance[i])    
+
+    mq_in = mq_in / k
+    
     # retorna os dados
     data = {
         'table': repetitions,
         'averages': average,
-        'variances': variance
+        'variances': variance,
+        'mq_in': mq_in
     }
 
     return render(request, 'index.html', data)
