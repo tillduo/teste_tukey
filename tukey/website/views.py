@@ -1,106 +1,102 @@
 from django.shortcuts import render
 import numpy as np
-import statistics as st
+import pandas as pd
 
-# Global variable
+# global variable
 k = None
 n = None
 alfa = None
+table = None
+average = None
+variance = None
+mq_in = None
 
 # Primary Function
 def hello_world(request):
     return render(request, 'index.html')
 
 
-
 def create_table(request):
-    global k
+    global k, n, alfa, table
     k = int(request.GET['k'])
-    global n
     n = int(request.GET['n'])
-    global alfa
     alfa = float(request.GET['alfa'])
 
-    items = [k, k * n - k]
-
-    list = generate_matrix(n, k)
+    generate_matrix()
 
     data = {'k': k,
             'n': n,
             'alfa': alfa,
-            'items': items,
-            'list': list}
+            'table': table}
 
     return render(request, 'index.html', data)
 
 
-def calcule_average(request):
-    repetitions = np.full((n, k), None)
-    entry_data_average = np.full((k, 1), float(0))
-    entry_data_variance = np.full((k, 1), float(0))
-    average = np.full((k, 1), float(0))
-    variance = np.full((k, 1), float(0))
-    mq_in = float(0)
+def calcule_tukey(request):
+    global k, n, alfa, table, average, variance, mq_in 
 
-    # calcula a média
-    for j in range(n):
-        for i in range(k):
-            cell = 'cell_' + str(j) + '_' + str(i)
-            
-            repetitions = float(request.GET[cell])
-            entry_data_average[i] = (float(entry_data_average[i]) + float(request.GET[cell]))
-
-    for i in range(k):
-        average[i] = (float(entry_data_average[i]) / n)
-
-
-    # calcula a variância
-    for j in range(n):
-        for i in range(k):
-            cell = 'cell_' + str(j) + '_' + str(i)
-            
-            entry_data_variance[i] = (float(entry_data_variance[i]) + float((float(request.GET[cell]) - float(average[i])) * (float(request.GET[cell]) - float(average[i]))))
-
-
-    for i in range(k):
-        variance[i] = (float(entry_data_variance[i]) / (n-1))
-
-    # calcula mq_dentro
-    for i in range(k):
-        mq_in = mq_in + float(variance[i])    
-
-    mq_in = mq_in / k
+    get_average()
+    get_variance()
+    get_mq()
     
-    # retorna os dados
-    data = {
-        'table': repetitions,
-        'averages': average,
-        'variances': variance,
-        'mq_in': mq_in
-    }
+    data = {'k': k,
+            'n': n,
+            'alfa': alfa,
+            'table': table,
+            'average': average,
+            'variance': variance,
+            'mq_in': mq_in}
 
     return render(request, 'index.html', data)
 
 
 # Secondary Function
-def generate_matrix(n, k):
-    row = []
-    list = []
-    first = True
+def generate_matrix():
+    global table
+    table = pd.DataFrame()
 
-    for j in range(n + 1):
-        if first:
-            row.append('Repetições')
-        else:
-            row.append('{}'.format(j))
+    for i in range(1, max(k, n) + 1):
+        if n >= i:
+            table['T{}'.format(i)] = np.nan
+        if k >= i:
+            table.loc[i] = np.nan
 
+    return table
+
+
+def get_table_values():
+    global table
+
+    for j in range(n):
         for i in range(k):
-            if first:
-                row.append('T{}'.format(i + 1))
-            else:
-                row.append('')
+            cell = 'cell_' + str(j) + '_' + str(i)      
+            table[table.column[i]][j] = float(request.GET[cell])
+            # ou table[table.column[j]][i] = float(request.GET[cell])
+      
+    return table
 
-        list.append(row)
-        row = []
-        first = False
-    return list
+
+def get_average():
+    global average, table
+    average = []
+
+    for i in range(max(k, n)):
+        average.append(table[table.columns[i]].mean())
+    
+    return average
+
+
+def get_variance():
+    global variance, table
+    variance = []
+
+    for i in range(max(k, n)):
+        variance.append(table[table.columns[i]].var() / table[table.columns[i]].size)
+  
+    return variance
+
+def get_mq():
+    global mq_in, variance
+    mq_in = sum(variance) / len(variance)
+  
+    return mq_in
