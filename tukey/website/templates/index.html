@@ -42,11 +42,11 @@
     <br>
 
     <div>
-        <form action="{% url 'calcule_average' %}" id="calcule_average">
+        <form action="{% url 'calcule_tukey' %}" id="calcule_tukey">
             {% csrf_token %}
             <label for="teste">Tratamentos</label>
             <table id="teste">
-                {% for row in list %}
+                {% for row in table %}
                 <tr>
                     {% for cell in row %}
                     {% if forloop.first or forloop.parentloop.first %}
@@ -70,15 +70,15 @@
                 {% endfor %}
                 <tr>
                     <th>Média</th>
-                    {% for average in averages %}
-                    <td>{{ average }}</td>
+                    {% for value in average %}
+                    <td>{{ value }}</td>
                     {% endfor %}
                 </tr>
 
                 <tr>
                     <th>Variância</th>
-                    {% for variance in variances %}
-                    <td>{{ variance }}</td>
+                    {% for value in variance %}
+                    <td>{{ value }}</td>
                     {% endfor %}
                 </tr>
 

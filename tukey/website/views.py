@@ -1,83 +1,56 @@
 from django.shortcuts import render
 import numpy as np
-import statistics as st
 
 # Global variable
 k = None
 n = None
 alfa = None
+table = None
+average = None
+variance = None
+mq_in = None
 
 # Primary Function
 def hello_world(request):
     return render(request, 'index.html')
 
 
-
 def create_table(request):
-    global k
+    global k, n, alfa, table
+
     k = int(request.GET['k'])
-    global n
     n = int(request.GET['n'])
-    global alfa
     alfa = float(request.GET['alfa'])
 
     items = [k, k * n - k]
-
-    list = generate_matrix(n, k)
+    table = generate_matrix(n, k)
 
     data = {'k': k,
             'n': n,
             'alfa': alfa,
             'items': items,
-            'list': list}
+            'table': table}
 
     return render(request, 'index.html', data)
 
 
-def calcule_average(request):
-    repetitions = np.full((n, k), None)
-    entry_data_average = np.full((k, 1), float(0))
-    entry_data_variance = np.full((k, 1), float(0))
-    average = np.full((k, 1), float(0))
-    variance = np.full((k, 1), float(0))
-    mq_in = float(0)
+def calcule_tukey(request):
+    global average, variance, mq_in
 
-    # calcula a média
-    for j in range(n):
-        for i in range(k):
-            cell = 'cell_' + str(j) + '_' + str(i)
-            
-            repetitions = float(request.GET[cell])
-            entry_data_average[i] = (float(entry_data_average[i]) + float(request.GET[cell]))
+    items = [k, k * n - k]
+    table_values = get_table_values(request)
+    average = get_average(table_values)
+    variance = get_variance(table_values)
+    mq_in = get_mq()
 
-    for i in range(k):
-        average[i] = (float(entry_data_average[i]) / n)
-
-
-    # calcula a variância
-    for j in range(n):
-        for i in range(k):
-            cell = 'cell_' + str(j) + '_' + str(i)
-            
-            entry_data_variance[i] = (float(entry_data_variance[i]) + float((float(request.GET[cell]) - float(average[i])) * (float(request.GET[cell]) - float(average[i]))))
-
-
-    for i in range(k):
-        variance[i] = (float(entry_data_variance[i]) / (n-1))
-
-    # calcula mq_dentro
-    for i in range(k):
-        mq_in = mq_in + float(variance[i])    
-
-    mq_in = mq_in / k
-    
-    # retorna os dados
-    data = {
-        'table': repetitions,
-        'averages': average,
-        'variances': variance,
-        'mq_in': mq_in
-    }
+    data = {'k': k,
+            'n': n,
+            'alfa': alfa,
+            'items': items,
+            'table': table,
+            'average': average,
+            'variance': variance,
+            'mq_in': mq_in}
 
     return render(request, 'index.html', data)
 
@@ -104,3 +77,48 @@ def generate_matrix(n, k):
         row = []
         first = False
     return list
+
+
+def get_table_values(request):
+    repetitions = np.zeros((n, k))
+
+    for j in range(n):
+        for i in range(k):            
+            repetitions[j][i] = float(request.GET['cell_' + str(j) + '_' + str(i)])
+
+    return repetitions
+
+
+def get_average(repetitions):
+    entry_data_average = []
+
+    for j in range(n):
+        averages = []
+        for i in [cell[j] for cell in repetitions]:            
+            averages.append(i)
+        entry_data_average.append(np.mean(averages))
+
+    return np.around(entry_data_average, 2)
+
+
+def get_variance(repetitions):
+    entry_data_variance = []
+
+    for j in range(k):
+        variances = []
+        for i in [cell[j] for cell in repetitions]:
+            variances.append(i)
+        entry_data_variance.append(np.var(variances, ddof=1))
+
+    return np.around(entry_data_variance, 2)
+
+
+def get_mq():
+    mq = 0
+
+    for i in range(k):
+        mq += variance[i]
+
+    mq /= k
+
+    return np.around(mq, 3)
