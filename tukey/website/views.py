@@ -10,7 +10,6 @@ average = None
 variance = None
 mq_in = None
 
-
 # Primary Function
 def hello_world(request):
     return render(request, 'index.html')
@@ -43,11 +42,10 @@ def calcule_tukey(request):
     average = get_average(table_values)
     variance = get_variance(table_values)
     mq_in = get_mq()
-
+    
     data = {'k': k,
             'n': n,
             'alfa': alfa,
-            'items': items,
             'table': table,
             'average': average,
             'variance': variance,
