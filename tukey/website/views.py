@@ -110,18 +110,13 @@ def get_variance(repetitions):
             variances.append(i)
         entry_data_variance.append(np.var(variances, ddof=1))
 
-    return np.around(entry_data_variance, 2)
+    return np.around(np.nan_to_num(entry_data_variance), 2)
 
 
 def get_mq():
-    mq = 0
+    mq = np.mean(variance)
 
-    for i in range(k):
-        mq += variance[i]
-
-    mq /= k
-
-    return np.around(mq, 3)
+    return np.around(np.nan_to_num(mq), 3)
 
 
 def update_table(repetitions):
