@@ -39,6 +39,7 @@ def calcule_tukey(request):
 
     items = [k, k * n - k]
     table_values = get_table_values(request)
+    update_table(table_values)
     average = get_average(table_values)
     variance = get_variance(table_values)
     mq_in = get_mq()
@@ -70,7 +71,7 @@ def generate_matrix(n, k):
             if first:
                 row.append('T{}'.format(i + 1))
             else:
-                row.append('')
+                row.append('0')
 
         list.append(row)
         row = []
@@ -91,10 +92,10 @@ def get_table_values(request):
 def get_average(repetitions):
     entry_data_average = []
 
-    for j in range(n):
+    for j in range(k):
         averages = []
-        for i in [cell[j] for cell in repetitions]:            
-            averages.append(i)
+        for i in [cell[j] for cell in repetitions]:           
+            averages.append(float(i))
         entry_data_average.append(np.mean(averages))
 
     return np.around(entry_data_average, 2)
@@ -121,3 +122,14 @@ def get_mq():
     mq /= k
 
     return np.around(mq, 3)
+
+
+def update_table(repetitions):
+    global table
+
+    for j in range(1, n + 1):
+        for i in range(1, k + 1):
+            table[j][i] = repetitions[j-1][i-1]
+
+    return table
+    
