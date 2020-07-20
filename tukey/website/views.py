@@ -10,6 +10,7 @@ average = None
 variance = None
 mq_in = None
 
+
 # Primary Function
 def hello_world(request):
     return render(request, 'index.html')
