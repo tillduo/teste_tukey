@@ -6,99 +6,119 @@
     <title>Amplitude Studentizada</title>
     <meta charset="utf-8">
     <meta name="author" content="Till Duo">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static '../styles/main.css' %}"> -->
+
+    <style>
+        /* body {
+            background-color: #010;
+            color: #FFF;
+        }
+        
+        table {
+            color: #FFF;
+        } */
+    </style>
 </head>
 
 <body>
-    <h1>Amplitude Studentizada</h1>
+    <div class="container">
+        <h1>Amplitude Studentizada</h1>
 
-    <div>
-        <form action="{% url 'create_table' %}" id="create_table" name="create_table">
-            {% csrf_token %}
-            <label for="inicio">Inicio</label>
-            <table id="inicio" border="1">
-                <tr>
-                    <td>Tratamentos (k)</td>
-                    <td><input type="number" id="k" name="k" min="0" value="{{ k }}"
-                            style="border: 0; text-align: center;"></td>
-                </tr>
-                <tr>
-                    <td>Repetições (n)</td>
-                    <td><input type="number" id="n" name="n" min="0" value="{{ n }}"
-                            style="border: 0; text-align: center;"></td>
-                </tr>
-                <tr>
-                    <td>Alfa</td>
-                    <td><input type="text" id="alfa" name="alfa" value="{{ alfa }}" list="alfalist"
-                            style="border: 0; text-align: center;"></td>
-                </tr>
-                {% for item in items %}
-                <tr>
-                    <td>GL{{ forloop.counter }}</td>
-                    <td><label>{{ item }}</label></td>
-                </tr>
-                {% endfor %}
-            </table>
-            <input type="submit" value="Gerar tabela de tratamentos">
-        </form>
-        <datalist id="alfalist">
+        <div>
+            <form action="{% url 'create_table' %}" id="create_table" name="create_table">
+                {% csrf_token %}
+                <center>
+                    <table class="table">
+                        <thead>
+                            <h4>Dados Iniciais</h4>
+                        </thead>
+                        <tr>
+                            <th scope="row">Tratamentos (k)</th>
+                            <td>
+                                <input class="form-control" type="number" id="k" name="k" min="0" value="{{ k }}" style="border: 0; text-align: center;"></th>
+                                <td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Repetições (n)</th>
+                            <td><input class="form-control" type="number" id="n" name="n" min="0" value="{{ n }}" style="border: 0; text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Alfa</th>
+                            <td><input class="form-control" type="text" id="alfa" name="alfa" value="{{ alfa }}" list="alfalist" style="border: 0; text-align: center;"></td>
+                        </tr>
+                        {% for item in items %}
+                        <tr>
+                            <th scope="row">GL{{ forloop.counter }}</th>
+                            <th>
+                                <center>{{ item }}</center>
+                            </th>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <center></center>
+                    <button class="btn btn-primary" type="submit">Gerar tabela de tratamentos</button>
+                </center>
+            </form>
+            <datalist id="alfalist">
             <option value="0.01">
             <option value="0.05">
             <!--option value="0.2"-->
         </datalist>
+        </div>
+
+        <hr>
+        <hr>
+
+        <div>
+            <form action="{% url 'calcule_tukey' %}" id="calcule_tukey">
+                {% csrf_token %}
+                <center>
+                    <table class="table">
+                        </thead>
+                        <h4>Tratamentos</h4>
+                        </thead>
+                        {% for row in table %}
+                        <tr>
+                            {% for cell in row %} {% if forloop.first or forloop.parentloop.first %}
+                            <th scope="row">
+                                {% else %}
+                                <td>
+                                    {% endif %} {% if forloop.first or forloop.parentloop.first %} {{ cell }}
+                            </th>
+                            {% else %}
+
+                            <input value="{{ cell }}" type="number" step="0.25" min="0" id="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}" name="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}" style="width: 50px; text-align: center;">
+                            </td>
+                            {% endif %} {% endfor %}
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <th scope="row">Média</th>
+                            {% for value in average %}
+                            <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Variância</th>
+                            {% for value in variance %}
+                            <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <th scope="row">MQ Dentro</th>
+                            <td>{{ mq_in }}</td>
+                        </tr>
+                    </table>
+                    <button class="btn btn-primary" type="submit"> Calcular </button>
+                    <center>
+            </form>
+        </div>
+        <hr>
+        <hr>
     </div>
-
-    <br>
-
-    <div>
-        <form action="{% url 'calcule_tukey' %}" id="calcule_tukey">
-            {% csrf_token %}
-            <label for="teste">Tratamentos</label>
-            <table id="teste">
-                {% for row in table %}
-                <tr>
-                    {% for cell in row %}
-                    {% if forloop.first or forloop.parentloop.first %}
-                    <th>
-                        {% else %}
-                    <td>
-                        {% endif %}
-                        {% if forloop.first or forloop.parentloop.first %}
-                        {{ cell }}
-                        </th>
-                        {% else %}
-
-                        <input value="{{ cell }}" type="number" step="0.25" min="0"
-                            id="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
-                            name="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
-                            style="width: 50px; text-align: center;">
-                    </td>
-                    {% endif %}
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-                <tr>
-                    <th>Média</th>
-                    {% for value in average %}
-                    <td>{{ value }}</td>
-                    {% endfor %}
-                </tr>
-
-                <tr>
-                    <th>Variância</th>
-                    {% for value in variance %}
-                    <td>{{ value }}</td>
-                    {% endfor %}
-                </tr>
-
-                <tr>
-                    <th>MQ Dentro</th>
-                    <td>{{ mq_in }}</td>
-                </tr>
-            </table>
-            <input type="submit" value="Calcular">
-        </form>
-    </div>
-
 </body>
 
 </html>
