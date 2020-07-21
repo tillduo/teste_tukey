@@ -6,6 +6,7 @@ k = None
 n = None
 alfa = None
 table = None
+q = None
 average = None
 variance = None
 mq_in = None
@@ -16,11 +17,12 @@ def hello_world(request):
 
 
 def create_table(request):
-    global k, n, alfa, table
+    global k, n, alfa, q, table
 
     k = int(request.GET['k'])
     n = int(request.GET['n'])
     alfa = float(request.GET['alfa'])
+    q = float(request.GET['q'])
 
     items = [k, k * n - k]
     table = generate_matrix(n, k)
@@ -28,6 +30,7 @@ def create_table(request):
     data = {'k': k,
             'n': n,
             'alfa': alfa,
+            'q': q,
             'items': items,
             'table': table}
 
@@ -35,7 +38,7 @@ def create_table(request):
 
 
 def calcule_tukey(request):
-    global average, variance, mq_in
+    global average, variance, mq_in, hsd
 
     items = [k, k * n - k]
     table_values = get_table_values(request)
@@ -43,11 +46,16 @@ def calcule_tukey(request):
     average = get_average(table_values)
     variance = get_variance(table_values)
     mq_in = get_mq()
-    
+    hsd = get_hsd()
+    table_differences = generate_matrix_differences(k)
+
     data = {'k': k,
             'n': n,
             'alfa': alfa,
+            'q': q,
+            'hsd': hsd,
             'table': table,
+            'table_differences': table_differences,
             'average': average,
             'variance': variance,
             'mq_in': mq_in}
@@ -70,6 +78,29 @@ def generate_matrix(n, k):
         for i in range(k):
             if first:
                 row.append('T{}'.format(i + 1))
+            else:
+                row.append('0')
+
+        list.append(row)
+        row = []
+        first = False
+    return list
+
+
+def generate_matrix_differences(k):
+    row = []
+    list = []
+    first = True
+
+    for j in range(k + 1):
+        if first:
+            row.append('Médias')
+        else:
+            row.append('Média T{}'.format(j))
+
+        for i in range(k):
+            if first:
+                row.append('Média T{}'.format(i + 1))
             else:
                 row.append('0')
 
@@ -117,6 +148,12 @@ def get_mq():
     mq = np.mean(variance)
 
     return np.around(np.nan_to_num(mq), 3)
+
+
+def get_hsd():
+    hsd = (float(q) * (np.sqrt(mq_in/n)))
+
+    return np.around(np.nan_to_num(hsd), 3)    
 
 
 def update_table(repetitions):
