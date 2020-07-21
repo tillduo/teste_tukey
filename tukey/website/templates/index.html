@@ -3,11 +3,11 @@
 <html lang="pt-br">
 
 <head>
-    <title>Amplitude Studentizada</title>
+    <title>Teste de Tukey</title>
     <meta charset="utf-8">
     <meta name="author" content="Till Duo">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <!-- <link rel="stylesheet" type="text/css" href="{% static '../styles/main.css' %}"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 
     <style>
         /* body {
@@ -23,7 +23,7 @@
 
 <body>
     <div class="container">
-        <h1>Amplitude Studentizada</h1>
+        <h1>Teste de Tukey</h1>
 
         <div>
             <form action="{% url 'create_table' %}" id="create_table" name="create_table">
@@ -36,16 +36,16 @@
                         <tr>
                             <th scope="row">Tratamentos (k)</th>
                             <td>
-                                <input class="form-control" type="number" id="k" name="k" min="0" value="{{ k }}" style="border: 0; text-align: center;"></th>
+                                <input class="form-control" type="number" id="k" name="k" min="0" value="{{ k }}" required></th>
                                 <td>
                         </tr>
                         <tr>
                             <th scope="row">Repetições (n)</th>
-                            <td><input class="form-control" type="number" id="n" name="n" min="0" value="{{ n }}" style="border: 0; text-align: center;"></td>
+                            <td><input class="form-control" type="number" id="n" name="n" min="0" value="{{ n }}" required></td>
                         </tr>
                         <tr>
                             <th scope="row">Alfa</th>
-                            <td><input class="form-control" type="text" id="alfa" name="alfa" value="{{ alfa }}" list="alfalist" style="border: 0; text-align: center;"></td>
+                            <td><input class="form-control" type="text" id="alfa" name="alfa" value="{{ alfa }}" list="alfalist" required></td>
                         </tr>
                         {% for item in items %}
                         <tr>
@@ -56,7 +56,6 @@
                         </tr>
                         {% endfor %}
                     </table>
-                    <center></center>
                     <button class="btn btn-primary" type="submit">Gerar tabela de tratamentos</button>
                 </center>
             </form>
@@ -88,7 +87,7 @@
                             </th>
                             {% else %}
 
-                            <input value="{{ cell }}" type="number" step="0.25" min="0" id="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}" name="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}" style="width: 50px; text-align: center;">
+                            <input value="{{ cell }}" type="number" step="0.25" min="0" id="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}" name="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
                             </td>
                             {% endif %} {% endfor %}
                         </tr>
