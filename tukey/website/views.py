@@ -102,7 +102,14 @@ def generate_matrix_differences(k):
             if first:
                 row.append('Média T{}'.format(i + 1))
             else:
-                row.append('0')
+                difference = average[j-1] - average[i]
+                if((j-1) == i):
+                    difference = '-'
+                else:
+                    if (difference < 0):
+                        difference = difference * (-1)
+
+                row.append(difference)
 
         list.append(row)
         row = []

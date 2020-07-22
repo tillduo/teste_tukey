@@ -118,7 +118,7 @@
         <div>
             <table class="table">
                 </thead>
-                <h4>Verificação dos valores</h4>
+                <h4>Diferenças das Médias</h4>
                 </thead>
                 {% for row in table_differences %}
                 <tr>
@@ -128,9 +128,16 @@
                         <td>
                             {% endif %} {% if forloop.first or forloop.parentloop.first %} {{ cell }}
                     </th>
+                    {% else %} {% if cell > hsd %}
+                    <p style="color: green" id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}" name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
+                        {{cell}}
+                    </p>
                     {% else %}
+                    <p style="color: red" id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}" name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
+                        {{cell}}
+                    </p>
+                    {% endif %}
 
-                    <input value="{{ cell }}" type="number" step="0.25" min="0" id="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}" name="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
                     </td>
                     {% endif %} {% endfor %}
                 </tr>
