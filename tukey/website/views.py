@@ -48,6 +48,8 @@ def calcule_tukey(request):
     mq_in = get_mq()
     hsd = get_hsd()
     table_differences = generate_matrix_differences(k)
+    descending_averages = get_descending_averages(average)
+    codes = define_averages_code(descending_averages, k, hsd)
 
     data = {'k': k,
             'n': n,
@@ -57,6 +59,8 @@ def calcule_tukey(request):
             'table': table,
             'table_differences': table_differences,
             'average': average,
+            'codes': codes,
+            'descending_averages': descending_averages,
             'variance': variance,
             'mq_in': mq_in}
 
@@ -115,6 +119,30 @@ def generate_matrix_differences(k):
         row = []
         first = False
     return list
+
+def get_descending_averages(average):
+    ascending_averages = np.sort(average)
+    descending_averages = ascending_averages[::-1]
+    return descending_averages
+
+def define_averages_code(descending_averages, k, hsd):
+    codes = np.full((1,k), 999)
+
+    for i in range(k):
+        if(i < k-1):
+            if(i == 0):
+                codes[0][i] = i
+            if(descending_averages[i+1] > (descending_averages[i] - hsd)):
+                codes[0][i+1] = i
+            if(codes[0][i] == 999):
+                codes[0][i] = codes[0][i+1]
+        else:
+            if(descending_averages[i-1] < (descending_averages[i] + hsd)):
+                codes[0][i] = codes[0][i-1]
+            else:
+                codes[0][i] = i    
+
+    return codes
 
 
 def get_table_values(request):

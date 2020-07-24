@@ -143,6 +143,20 @@
                 </tr>
                 {% endfor %}
             </table>
+            <table class="table">
+                <tr>
+                    <th scope="row">Média</th>
+                    {% for value in descending_averages %}
+                    <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <th scope="row">Código</th>
+                    {% for row in codes%} {% for value in row %}
+                    <td>{{ value }}</td>
+                    {% endfor %} {% endfor %}
+                </tr>
+            </table>
         </div>
     </div>
 </body>
