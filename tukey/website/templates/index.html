@@ -6,7 +6,8 @@
     <title>Teste de Tukey</title>
     <meta charset="utf-8">
     <meta name="author" content="Till Duo">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 
@@ -25,38 +26,46 @@
                         <tr>
                             <th scope="row">Tratamentos (k)</th>
                             <td>
-                                <input class="form-control" type="number" id="k" name="k" min="0" value="{{ k }}" required></th>
-                                <td>
+                                <input class="form-control" type="number" id="k" name="k" min="1" value="{{ k }}"
+                                    required></th>
+                            <td>
                         </tr>
                         <tr>
                             <th scope="row">Repetições (n)</th>
-                            <td><input class="form-control" type="number" id="n" name="n" min="0" value="{{ n }}" required></td>
+                            <td><input class="form-control" type="number" id="n" name="n" min="2" value="{{ n }}"
+                                    required></td>
                         </tr>
                         <tr>
                             <th scope="row">Alfa</th>
-                            <td><input class="form-control" type="text" id="alfa" name="alfa" value="{{ alfa }}" list="alfalist" required></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Q</th>
-                            <td><input class="form-control" type="text" id="q" name="q" min="0" value="{{ q }}" required></td>
+                            <td><input class="form-control" type="text" id="alfa" name="alfa" value="{{ alfa }}"
+                                    list="alfalist" required></td>
                         </tr>
                         {% for item in items %}
                         <tr>
                             <th scope="row">GL{{ forloop.counter }}</th>
-                            <th>
+                            <td>
                                 <center>{{ item }}</center>
-                            </th>
+                            </td>
                         </tr>
                         {% endfor %}
+                        <tr>
+                            <th scope="row">Q</th>
+                            <td>
+                                <p {% if q == "Valor desconhecido" %} style="color:red" {% endif %}> {{ q }} </p>
+                            </td>
+                        </tr>
                     </table>
                     <button class="btn btn-primary" type="submit">Gerar tabela de tratamentos</button>
                 </center>
             </form>
             <datalist id="alfalist">
-            <option value="0.01">
-            <option value="0.05">
-            <!--option value="0.2"-->
-        </datalist>
+                <option value="0.001">
+                <option value="0.005">
+                <option value="0.01">
+                <option value="0.025">
+                <option value="0.05">
+                <option value="0.1">
+            </datalist>
         </div>
 
         <hr>
@@ -75,12 +84,14 @@
                             {% for cell in row %} {% if forloop.first or forloop.parentloop.first %}
                             <th scope="row">
                                 {% else %}
-                                <td>
-                                    {% endif %} {% if forloop.first or forloop.parentloop.first %} {{ cell }}
-                            </th>
-                            {% else %}
+                            <td>
+                                {% endif %} {% if forloop.first or forloop.parentloop.first %} {{ cell }}
+                                </th>
+                                {% else %}
 
-                            <input value="{{ cell }}" type="number" step="0.25" min="0" id="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}" name="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
+                                <input value="{{ cell }}" type="number" step="0.25" min="0"
+                                    id="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
+                                    name="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
                             </td>
                             {% endif %} {% endfor %}
                         </tr>
@@ -125,18 +136,22 @@
                     {% for cell in row %} {% if forloop.first or forloop.parentloop.first %}
                     <th scope="row">
                         {% else %}
-                        <td>
-                            {% endif %} {% if forloop.first or forloop.parentloop.first %} {{ cell }}
-                    </th>
-                    {% else %} {% if cell > hsd %}
-                    <p style="color: green" id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}" name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
-                        {{cell}}
-                    </p>
-                    {% else %}
-                    <p style="color: red" id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}" name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
-                        {{cell}}
-                    </p>
-                    {% endif %}
+                    <td>
+                        {% endif %} {% if forloop.first or forloop.parentloop.first %} {{ cell }}
+                        </th>
+                        {% else %} {% if cell > hsd %}
+                        <p style="color: green"
+                            id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
+                            name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
+                            {{cell}}
+                        </p>
+                        {% else %}
+                        <p style="color: red"
+                            id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
+                            name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
+                            {{cell}}
+                        </p>
+                        {% endif %}
 
                     </td>
                     {% endif %} {% endfor %}

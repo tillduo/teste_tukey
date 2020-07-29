@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import numpy as np
+import pandas as pd
 
 # Global variable
 k = None
@@ -22,9 +23,10 @@ def create_table(request):
     k = int(request.GET['k'])
     n = int(request.GET['n'])
     alfa = float(request.GET['alfa'])
-    q = float(request.GET['q'])
 
     items = [k, k * n - k]
+    q = get_q(items)
+
     table = generate_matrix(n, k)
 
     data = {'k': k,
@@ -120,10 +122,12 @@ def generate_matrix_differences(k):
         first = False
     return list
 
+
 def get_descending_averages(average):
     ascending_averages = np.sort(average)
     descending_averages = ascending_averages[::-1]
     return descending_averages
+
 
 def define_averages_code(descending_averages, k, hsd):
     codes = np.full((1,k), 999)
@@ -199,4 +203,13 @@ def update_table(repetitions):
             table[j][i] = repetitions[j-1][i-1]
 
     return table
-    
+
+
+def get_q(items):
+    csv = pd.read_csv('website/static/csv/alfa_{}.csv'.format(alfa))
+    k = items[0] # verificar o que fazer caso for maior que 100
+    df = items[1] - 1  # verificar o que fazer caso for maior que 120, usar inf?
+
+    q = np.around(csv[csv.columns[k]][df], 3)
+
+    return ('Valor desconhecido' if np.isnan(q) else q)
