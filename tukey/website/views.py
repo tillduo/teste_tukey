@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
 
@@ -26,7 +27,6 @@ def create_table(request):
 
     items = [k, k * n - k]
     q = get_q(items)
-
     table = generate_matrix(n, k)
 
     data = {'k': k,
@@ -52,6 +52,7 @@ def calcule_tukey(request):
     table_differences = generate_matrix_differences(k)
     descending_averages = get_descending_averages(average)
     codes = define_averages_code(descending_averages, k, hsd)
+    graphic = None #generate_graphic(average)
 
     data = {'k': k,
             'n': n,
@@ -64,7 +65,8 @@ def calcule_tukey(request):
             'codes': codes,
             'descending_averages': descending_averages,
             'variance': variance,
-            'mq_in': mq_in}
+            'mq_in': mq_in,
+            'graphic': graphic}
 
     return render(request, 'index.html', data)
 
@@ -213,3 +215,18 @@ def get_q(items):
     q = np.around(csv[csv.columns[k]][df], 3)
 
     return ('Valor desconhecido' if np.isnan(q) else q)
+
+
+def generate_graphic(average):
+    index = ['']
+
+    for i in range(len(average)):
+        index.append(i + 1)
+        plt.bar(i + 1, average[i])
+  
+    plt.xticks(np.arange(0, len(average) + 2), (index))
+    plt.title("Médias")
+    plt.xlabel("Quantidade")
+    plt.ylabel("Valor")
+
+    return plt.figure()
