@@ -2,6 +2,7 @@ from django.shortcuts import render
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
+import string
 
 # Global variable
 k = None
@@ -132,21 +133,18 @@ def get_descending_averages(average):
 
 
 def define_averages_code(descending_averages, k, hsd):
-    codes = np.full((1,k), 999)
+    previous_codes = list(string.ascii_lowercase)
+    codes = []
 
     for i in range(k):
-        if(i < k-1):
-            if(i == 0):
-                codes[0][i] = i
-            if(descending_averages[i+1] > (descending_averages[i] - hsd)):
-                codes[0][i+1] = i
-            if(codes[0][i] == 999):
-                codes[0][i] = codes[0][i+1]
-        else:
-            if(descending_averages[i-1] < (descending_averages[i] + hsd)):
-                codes[0][i] = codes[0][i-1]
-            else:
-                codes[0][i] = i    
+        codes.append('') # preenche o array de códigos com "vazio" em cada elemento
+
+    for i in range(k): # pega todos os elementos, começando do primeiro
+        for j in range(i, k): # pega os "proximos" elementos. ex: se o "i" é o 0, aqui o "j" vale 1, 2, 3, 4, 5
+            if descending_averages[i] <= (descending_averages[j]+hsd): #compara o i com cada um dos j
+                codes[i].append(previous_codes[0]) # aqui ele atribui o código pro índice do elemento "atual"
+                codes[j].append(previous_codes[0]) # e aqui ele atribui o código pro índice que tá comparando
+                previous_codes.pop(0)
 
     return codes
 
@@ -214,7 +212,7 @@ def get_q(items):
 
     q = np.around(csv[csv.columns[k]][df], 3)
 
-    return ('Valor desconhecido' if np.isnan(q) else q)
+    return 'Valor desconhecido' if np.isnan(q) else q
 
 
 def generate_graphic(average):
