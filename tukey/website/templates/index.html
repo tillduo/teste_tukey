@@ -3,7 +3,7 @@
 <html lang="pt-br">
 
 <head>
-    <title>Teste de Tukey</title>
+    <title>Início / Teste de Tukey</title>
     <meta charset="utf-8">
     <meta name="author" content="Till Duo">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -15,8 +15,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     <script type="text/javascript">
         window.onload = function () {
-            $('#myModal1').modal('show');
-            console.log("ghjkl00");
+
         }
     </script>
 </head>
@@ -35,7 +34,7 @@
                 <a class="nav-link">|</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">O que é o Teste de Tukey?</a>
+                <a class="nav-link" href="{% url 'whats_tukey_test' %}">O que é o Teste de Tukey?</a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link">|</a>

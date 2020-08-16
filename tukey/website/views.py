@@ -18,6 +18,9 @@ mq_in = None
 def hello_world(request):
     return render(request, 'index.html')
 
+def whats_tukey_test(request):
+    return render(request, 'whats-tukey-test.html')
+
 
 def create_table(request):
     global k, n, alfa, q, table
