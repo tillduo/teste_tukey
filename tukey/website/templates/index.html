@@ -7,177 +7,236 @@
     <meta charset="utf-8">
     <meta name="author" content="Till Duo">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <script type="text/javascript">
+        window.onload = function () {
+            $('#myModal1').modal('show');
+            console.log("ghjkl00");
+        }
+    </script>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Teste de Tukey</h1>
 
-        <div>
-            <form action="{% url 'create_table' %}" id="create_table" name="create_table">
-                {% csrf_token %}
-                <center>
-                    <table class="table">
-                        <thead>
-                            <h4>Dados Iniciais</h4>
-                        </thead>
-                        <tr>
-                            <th scope="row">Tratamentos (k)</th>
-                            <td>
-                                <input class="form-control" type="number" id="k" name="k" min="1" value="{{ k }}"
-                                    required></th>
-                            <td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Repetições (n)</th>
-                            <td><input class="form-control" type="number" id="n" name="n" min="2" value="{{ n }}"
-                                    required></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Alfa</th>
-                            <td><input class="form-control" type="text" id="alfa" name="alfa" value="{{ alfa }}"
-                                    list="alfalist" required></td>
-                        </tr>
-                        {% for item in items %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar-home">
+    <a class="navbar-brand">Teste de Tukey</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#content-navbar"
+            aria-controls="content-navbar" aria-expanded="false" aria-label="Alterna navegação">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="content-navbar">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link">|</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">O que é o Teste de Tukey?</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link">|</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Sobre a Ferramenta</a>
+            </li>
+        </ul>
+        <a class="nav-link" href="/" id="do-test"> Fazer o Teste de Tukey</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div>
+        <form action="{% url 'create_table' %}" id="create_table" name="create_table">
+            {% csrf_token %}
+            <center>
+                <table class="table">
+                    <thead>
+                    <h4>Dados Iniciais</h4>
+                    </thead>
+                    <tr>
+                        <th scope="row">Tratamentos (k)</th>
+                        <td>
+                            <input class="form-control" type="number" id="k" name="k" min="1" value="{{ k }}"
+                                   required>
+                        </th>
+                        <td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Repetições (n)</th>
+                        <td><input class="form-control" type="number" id="n" name="n" min="2" value="{{ n }}"
+                                   required></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Alfa</th>
+                        <td><input class="form-control" type="text" id="alfa" name="alfa" value="{{ alfa }}"
+                                   list="alfalist" required></td>
+                    </tr>
+                    {% for item in items %}
                         <tr>
                             <th scope="row">GL{{ forloop.counter }}</th>
                             <td>
                                 <center>{{ item }}</center>
                             </td>
                         </tr>
-                        {% endfor %}
-                        <tr>
-                            <th scope="row">Q</th>
-                            <td>
-                                <p {% if q == "Valor desconhecido" %} style="color:red" {% endif %}> {{ q }} </p>
-                            </td>
-                        </tr>
-                    </table>
-                    <button class="btn btn-primary" type="submit">Gerar tabela de tratamentos</button>
-                </center>
-            </form>
-            <datalist id="alfalist">
-                <option value="0.001">
-                <option value="0.005">
-                <option value="0.01">
-                <option value="0.025">
-                <option value="0.05">
-                <option value="0.1">
-            </datalist>
-        </div>
+                    {% endfor %}
+                    <tr>
+                        <th scope="row">Q</th>
+                        <td>
+                            <p {% if q == "Valor desconhecido" %} style="color:red" {% endif %}> {{ q }} </p>
+                        </td>
+                    </tr>
+                </table>
+                <button class="btn btn-primary" type="submit">Gerar tabela de tratamentos</button>
+            </center>
+        </form>
+        <datalist id="alfalist">
+            <option value="0.001">
+            <option value="0.005">
+            <option value="0.01">
+            <option value="0.025">
+            <option value="0.05">
+            <option value="0.1">
+        </datalist>
+    </div>
 
-        <hr>
-        <hr>
+    <hr>
+    <hr>
 
-        <div>
-            <form action="{% url 'calcule_tukey' %}" id="calcule_tukey">
-                {% csrf_token %}
-                <center>
-                    <table class="table">
-                        </thead>
-                        <h4>Tratamentos</h4>
-                        </thead>
-                        {% for row in table %}
+    <div>
+        <form action="{% url 'calcule_tukey' %}" id="calcule_tukey">
+            {% csrf_token %}
+            <center>
+                <table class="table">
+                    </thead>
+                    <h4>Tratamentos</h4>
+                    </thead>
+                    {% for row in table %}
                         <tr>
                             {% for cell in row %} {% if forloop.first or forloop.parentloop.first %}
-                            <th scope="row">
-                                {% else %}
-                            <td>
-                                {% endif %} {% if forloop.first or forloop.parentloop.first %} {{ cell }}
+                                <th scope="row">
+                                    {% else %}
+                                <td>
+                            {% endif %} {% if forloop.first or forloop.parentloop.first %} {{ cell }}
                                 </th>
-                                {% else %}
+                            {% else %}
 
                                 <input value="{{ cell }}" type="number" step="0.25" min="0"
-                                    id="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
-                                    name="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
-                            </td>
+                                       id="cell_{{ forloop.parentloop.counter|add:'-2' }}_
+                                               {{ forloop.counter|add:'-2' }}"
+                                       name="cell_{{ forloop.parentloop.counter|add:'-2' }}_
+                                               {{ forloop.counter|add:'-2' }}">
+                                </td>
                             {% endif %} {% endfor %}
                         </tr>
+                    {% endfor %}
+                    <tr>
+                        <th scope="row">Média</th>
+                        {% for value in average %}
+                            <td>{{ value }}</td>
                         {% endfor %}
-                        <tr>
-                            <th scope="row">Média</th>
-                            {% for value in average %}
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Variância</th>
+                        {% for value in variance %}
                             <td>{{ value }}</td>
-                            {% endfor %}
-                        </tr>
+                        {% endfor %}
+                    </tr>
 
-                        <tr>
-                            <th scope="row">Variância</th>
-                            {% for value in variance %}
-                            <td>{{ value }}</td>
-                            {% endfor %}
-                        </tr>
+                    <tr>
+                        <th scope="row">MQ Dentro</th>
+                        <td>{{ mq_in }}</td>
+                    </tr>
 
-                        <tr>
-                            <th scope="row">MQ Dentro</th>
-                            <td>{{ mq_in }}</td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">HSD</th>
-                            <td>{{ hsd }}</td>
-                        </tr>
-                    </table>
-                    <button class="btn btn-primary" type="submit"> Calcular </button>
-                    <center>
-            </form>
-        </div>
-        <hr>
-        <hr>
-        <div>
-            <table class="table">
-                </thead>
-                <h4>Diferenças das Médias</h4>
-                </thead>
-                {% for row in table_differences %}
+                    <tr>
+                        <th scope="row">HSD</th>
+                        <td>{{ hsd }}</td>
+                    </tr>
+                </table>
+                <button class="btn btn-primary" type="submit"> Calcular</button>
+                <center>
+        </form>
+    </div>
+    <hr>
+    <hr>
+    <div>
+        <table class="table">
+            </thead>
+            <h4>Diferenças das Médias</h4>
+            </thead>
+            {% for row in table_differences %}
                 <tr>
                     {% for cell in row %} {% if forloop.first or forloop.parentloop.first %}
-                    <th scope="row">
-                        {% else %}
-                    <td>
-                        {% endif %} {% if forloop.first or forloop.parentloop.first %} {{ cell }}
+                        <th scope="row">
+                            {% else %}
+                        <td>
+                    {% endif %} {% if forloop.first or forloop.parentloop.first %} {{ cell }}
                         </th>
-                        {% else %} {% if cell > hsd %}
-                        <p style="color: green"
-                            id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
-                            name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
-                            {{cell}}
-                        </p>
+                    {% else %} {% if cell > hsd %}
+                            <p style="color: green"
+                               id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
+                               name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_
+                                       {{ forloop.counter|add:'-2' }}">
+                                {{ cell }}
+                            </p>
                         {% else %}
-                        <p style="color: red"
-                            id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
-                            name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
-                            {{cell}}
-                        </p>
+                            <p style="color: red"
+                               id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
+                               name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_
+                                       {{ forloop.counter|add:'-2' }}">
+                                {{ cell }}
+                            </p>
                         {% endif %}
 
-                    </td>
+                        </td>
                     {% endif %} {% endfor %}
                 </tr>
+            {% endfor %}
+        </table>
+        <table class="table">
+            <tr>
+                <th scope="row">Média</th>
+                {% for value in descending_averages %}
+                    <td>{{ value }}</td>
                 {% endfor %}
-            </table>
-            <table class="table">
-                <tr>
-                    <th scope="row">Média</th>
-                    {% for value in descending_averages %}
+            </tr>
+            <tr>
+                <th scope="row">Código</th>
+                {% for value in codes %}
                     <td>{{ value }}</td>
-                    {% endfor %}
-                </tr>
-                <tr>
-                    <th scope="row">Código</th>
-                    {% for value in codes%}
-                    <td>{{ value }}</td>
-                    {% endfor %}
-                </tr>
-                <tr>
-                    <th scope="row">Gráfico</th>
-                    <td><img src="{{ graphic }}" alt=""></td>
-                </tr>
-            </table>
+                {% endfor %}
+            </tr>
+            <tr>
+                <th scope="row">Gráfico</th>
+                <td><img src="{{ graphic }}" alt=""></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
         </div>
     </div>
+</div>
+
 </body>
 
 </html>

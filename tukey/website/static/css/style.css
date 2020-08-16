@@ -1,6 +1,6 @@
-h1 {
-    text-align: center;
-    padding: 20px;
+body {
+    background-color: #EEE;
+    color: #555;
 }
 
 .form-control {
@@ -14,4 +14,12 @@ h1 {
 .table input {
     text-align: center;
     border: 1px solid rgb(160, 160, 160);
+}
+
+#do-test {
+    color: #EEEEEE;
+}
+
+#navbar-home {
+    margin-bottom: 15px;
 }
