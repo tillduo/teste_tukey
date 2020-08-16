@@ -49,8 +49,28 @@
 
 <div class="container">
     <div>
+        <h4>Etapa 2 - Entrada dos dados coletados</h4>
+        <p>
+            Na primeira etapa, você informou o número de <b>Tratamentos <i>(k)</i></b>, <b>Repetições <i>(n)</i></b> e o
+            <b>Nível de Significância <i>(Alfa)</i></b>. Com os cálculos que explicamos na Etapa 1, foram obtidos os
+            seguintes resultados:
+        </p>
+    </div>
+    <div>
         <center>
             <table class="table">
+                <tr>
+                    <th scope="row">Tratamentos (k)</th>
+                    <td>
+                        <center>{{ k }}</center>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Repetições (n)</th>
+                    <td>
+                        <center>{{ n }}</center>
+                    </td>
+                </tr>
                 {% for item in items %}
                     <tr>
                         <th scope="row">GL{{ forloop.counter }}</th>
@@ -60,7 +80,7 @@
                     </tr>
                 {% endfor %}
                 <tr>
-                    <th scope="row">Q</th>
+                    <th scope="row">Amplitude Estudentizada <i>(q)</i></th>
                     <td>
                         <p {% if q == "Valor desconhecido" %} style="color:red" {% endif %}> {{ q }} </p>
                     </td>
@@ -73,13 +93,16 @@
     <hr>
 
     <div>
+        <div>
+            <h4>Tratamentos</h4>
+            <p>
+                Com isso, informe-nos os dados coletados, para que seja feita a comparação entre as amostras:
+            </p>
+        </div>
         <form action="{% url 'calcule_tukey' %}" id="calcule_tukey">
             {% csrf_token %}
             <center>
                 <table class="table">
-                    </thead>
-                    <h4>Tratamentos</h4>
-                    </thead>
                     {% for row in table %}
                         <tr>
                             {% for cell in row %} {% if forloop.first or forloop.parentloop.first %}
@@ -98,9 +121,11 @@
                         </tr>
                     {% endfor %}
                 </table>
-                <button class="btn btn-primary" type="submit"> Calcular</button>
-                </center>
+                <button class="btn btn-dark" type="submit"> Calcular </button>
+            </center>
         </form>
+        <br>
+        <br>
     </div>
 </div>
 
