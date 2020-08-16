@@ -40,7 +40,7 @@ def create_table(request):
             'items': items,
             'table': table}
 
-    return render(request, 'index.html', data)
+    return render(request, 'step2.html', data)
 
 
 def calcule_tukey(request):
@@ -72,7 +72,7 @@ def calcule_tukey(request):
             'mq_in': mq_in,
             'graphic': graphic}
 
-    return render(request, 'index.html', data)
+    return render(request, 'results.html', data)
 
 
 # Secondary Function
@@ -154,10 +154,11 @@ def define_averages_code(descending_averages, k, hsd):
 
 def get_table_values(request):
     repetitions = np.zeros((n, k))
+    get_data = request.GET.dict()
 
     for j in range(n):
         for i in range(k):            
-            repetitions[j][i] = float(request.GET['cell_' + str(j) + '_' + str(i)])
+            repetitions[j][i] = float(get_data.get('cell_'+str(j)+'_'+str(i)))
 
     return repetitions
 

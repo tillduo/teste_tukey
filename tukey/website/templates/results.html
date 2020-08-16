@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <title>Resultados / Teste de Tukey</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Till Duo">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <script type="text/javascript">
+        window.onload = function () {
+
+        }
+    </script>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar-home">
+    <a class="navbar-brand">Teste de Tukey</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#content-navbar"
+            aria-controls="content-navbar" aria-expanded="false" aria-label="Alterna navegação">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="content-navbar">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link">|</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'whats_tukey_test' %}">O que é o Teste de Tukey?</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link">|</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Sobre a Ferramenta</a>
+            </li>
+        </ul>
+        <a class="nav-link" href="/" id="do-test"> Fazer o Teste de Tukey</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div>
+
+        <center>
+            <table class="table">
+                <tr>
+                    <th scope="row">Média</th>
+                    {% for value in average %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <th scope="row">Variância</th>
+                    {% for value in variance %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <th scope="row">MQ Dentro</th>
+                    <td>{{ mq_in }}</td>
+                </tr>
+
+                <tr>
+                    <th scope="row">HSD</th>
+                    <td>{{ hsd }}</td>
+                </tr>
+            </table>
+            <center>
+                <hr>
+                <hr>
+                <div>
+                    <table class="table">
+                        </thead>
+                        <h4>Diferenças das Médias</h4>
+                        </thead>
+                        {% for row in table_differences %}
+                            <tr>
+                                {% for cell in row %} {% if forloop.first or forloop.parentloop.first %}
+                                    <th scope="row">
+                                        {% else %}
+                                    <td>
+                                {% endif %} {% if forloop.first or forloop.parentloop.first %} {{ cell }}
+                                    </th>
+                                {% else %} {% if cell > hsd %}
+                                        <p style="color: green"
+                                           id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
+                                           name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
+                                            {{ cell }}
+                                        </p>
+                                    {% else %}
+                                        <p style="color: red"
+                                           id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
+                                           name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
+                                            {{ cell }}
+                                        </p>
+                                    {% endif %}
+
+                                    </td>
+                                {% endif %} {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <table class="table">
+                        <tr>
+                            <th scope="row">Média</th>
+                            {% for value in descending_averages %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <th scope="row">Código</th>
+                            {% for value in codes %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <th scope="row">Gráfico</th>
+                            <td><img src="{{ graphic }}" alt=""></td>
+                        </tr>
+                    </table>
+                </div>
+    </div>
+</body>
+
+</html>

@@ -3,7 +3,7 @@
 <html lang="pt-br">
 
 <head>
-    <title>Início / Teste de Tukey</title>
+    <title>Dados / Teste de Tukey</title>
     <meta charset="utf-8">
     <meta name="author" content="Till Duo">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -49,53 +49,61 @@
 
 <div class="container">
     <div>
-        <form action="{% url 'create_table' %}" id="create_table" name="create_table">
+        <center>
+            <table class="table">
+                {% for item in items %}
+                    <tr>
+                        <th scope="row">GL{{ forloop.counter }}</th>
+                        <td>
+                            <center>{{ item }}</center>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th scope="row">Q</th>
+                    <td>
+                        <p {% if q == "Valor desconhecido" %} style="color:red" {% endif %}> {{ q }} </p>
+                    </td>
+                </tr>
+            </table>
+        </center>
+    </div>
+
+    <hr>
+    <hr>
+
+    <div>
+        <form action="{% url 'calcule_tukey' %}" id="calcule_tukey">
             {% csrf_token %}
             <center>
                 <table class="table">
-                    <thead>
-                    <h4>Dados Iniciais</h4>
                     </thead>
-                    <tr>
-                        <th scope="row">Tratamentos (k)</th>
-                        <td>
-                            <input class="form-control" type="number" id="k" name="k" min="1" value="{{ k }}"
-                                   required>
-                        </th>
-                        <td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Repetições (n)</th>
-                        <td><input class="form-control" type="number" id="n" name="n" min="2" value="{{ n }}"
-                                   required></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Alfa</th>
-                        <td><input class="form-control" type="text" id="alfa" name="alfa" value="{{ alfa }}"
-                                   list="alfalist" required></td>
-                    </tr>
-                    {% for item in items %}
+                    <h4>Tratamentos</h4>
+                    </thead>
+                    {% for row in table %}
                         <tr>
-                            <th scope="row">GL{{ forloop.counter }}</th>
-                            <td>
-                                <center>{{ item }}</center>
-                            </td>
+                            {% for cell in row %} {% if forloop.first or forloop.parentloop.first %}
+                                <th scope="row">
+                                    {% else %}
+                                <td>
+                            {% endif %} {% if forloop.first or forloop.parentloop.first %} {{ cell }}
+                                </th>
+                            {% else %}
+
+                                <input class="form-control" value="{{ cell }}" type="number" step="0.25" min="0"
+                                       id="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
+                                       name="cell_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
+                                </td>
+                            {% endif %} {% endfor %}
                         </tr>
                     {% endfor %}
                 </table>
-                <button class="btn btn-dark" type="submit">Gerar tabela de tratamentos</button>
-            </center>
+                <button class="btn btn-primary" type="submit"> Calcular</button>
+                </center>
         </form>
-        <datalist id="alfalist">
-            <option value="0.001">
-            <option value="0.005">
-            <option value="0.01">
-            <option value="0.025">
-            <option value="0.05">
-            <option value="0.1">
-        </datalist>
     </div>
 </div>
+
 </body>
 
 </html>
