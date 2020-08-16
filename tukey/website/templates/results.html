@@ -49,9 +49,23 @@
 
 <div class="container">
     <div>
+        <h4>Etapa 3 - Resultados</h4>
+        <p>
+            Com os dados informados nas etapas anteriores, foram feitos os cálculos para comparação e estes são os
+            resultados:
+        </p>
 
+        <p>Aqui estão presentes as <b>Médias</b> e <b>Variâncias</b> para cada tratamento que você informou:</p>
+    </div>
+    <div>
         <center>
             <table class="table">
+                <tr>
+                    <th scope="row"></th>
+                    {% for value in average %}
+                        <td><b>T{{ forloop.counter }}</b></td>
+                    {% endfor %}
+                </tr>
                 <tr>
                     <th scope="row">Média</th>
                     {% for value in average %}
@@ -65,6 +79,27 @@
                         <td>{{ value }}</td>
                     {% endfor %}
                 </tr>
+            </table>
+        </center>
+        <br>
+        <br>
+
+        <div>
+            <h4>Calculados</h4>
+            <p>
+                Com isso, informe-nos os dados coletados, para que seja feita a comparação entre as amostras:
+            </p>
+            <ul>
+                <li><b><i>MQ Dentro</i></b>: é dado pela média simples entre as <b>Variâncias</b>;</li>
+                <li><b><i>HSD</i></b>: é dado pela multiplicação da <b>Amplitude Estudentizada <i>(q)</i></b> pelo
+                    resultado do cálculo da raiz quadrada do <b><i>MQ Dentro</i></b> dividido pelo <b>Número de
+                        Repetições
+                        <i>(n)</i></b>. Simplicifando, temos: <i>HSD = <b>(q &#215; (&radic;(mq_dentro / n)))</b></i>.
+                </li>
+            </ul>
+        </div>
+        <center>
+            <table class="table">
 
                 <tr>
                     <th scope="row">MQ Dentro</th>
@@ -76,61 +111,75 @@
                     <td>{{ hsd }}</td>
                 </tr>
             </table>
-            <center>
-                <hr>
-                <hr>
-                <div>
-                    <table class="table">
-                        </thead>
-                        <h4>Diferenças das Médias</h4>
-                        </thead>
-                        {% for row in table_differences %}
-                            <tr>
-                                {% for cell in row %} {% if forloop.first or forloop.parentloop.first %}
-                                    <th scope="row">
-                                        {% else %}
-                                    <td>
-                                {% endif %} {% if forloop.first or forloop.parentloop.first %} {{ cell }}
-                                    </th>
-                                {% else %} {% if cell > hsd %}
-                                        <p style="color: green"
-                                           id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
-                                           name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
-                                            {{ cell }}
-                                        </p>
-                                    {% else %}
-                                        <p style="color: red"
-                                           id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
-                                           name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
-                                            {{ cell }}
-                                        </p>
-                                    {% endif %}
+        </center>
 
-                                    </td>
-                                {% endif %} {% endfor %}
-                            </tr>
+        <br>
+        <br>
+
+        <div>
+            <h4>Comparando as médias</h4>
+            <p>
+                Quase finalizando, temos a comparação entre as médias, informando se elas são diferentes entre si ou
+                não.
+            </p>
+            <p> Para decidir se uma média é diferente da outra, analisamos se a subtração entre as duas médias é
+                menor que o valor de <i>HSD</i>. Sendo assim, temos:
+            </p>
+            <br>
+        </div>
+        <center>
+            <div>
+                <table class="table">
+                    {% for row in table_differences %}
+                        <tr>
+                            {% for cell in row %} {% if forloop.first or forloop.parentloop.first %}
+                                <th scope="row">
+                                    {% else %}
+                                <td>
+                            {% endif %} {% if forloop.first or forloop.parentloop.first %} {{ cell }}
+                                </th>
+                            {% else %} {% if cell > hsd %}
+                                    <p style="color: green"
+                                       id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
+                                       name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
+                                        {{ cell }}
+                                    </p>
+                                {% else %}
+                                    <p style="color: red"
+                                       id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
+                                       name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
+                                        {{ cell }}
+                                    </p>
+                                {% endif %}
+
+                                </td>
+                            {% endif %} {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+                <table class="table">
+                    <tr>
+                        <th scope="row">Média</th>
+                        {% for value in descending_averages %}
+                            <td>{{ value }}</td>
                         {% endfor %}
-                    </table>
-                    <table class="table">
-                        <tr>
-                            <th scope="row">Média</th>
-                            {% for value in descending_averages %}
-                                <td>{{ value }}</td>
-                            {% endfor %}
-                        </tr>
-                        <tr>
-                            <th scope="row">Código</th>
-                            {% for value in codes %}
-                                <td>{{ value }}</td>
-                            {% endfor %}
-                        </tr>
-                        <tr>
-                            <th scope="row">Gráfico</th>
-                            <td><img src="{{ graphic }}" alt=""></td>
-                        </tr>
-                    </table>
-                </div>
+                    </tr>
+                    <tr>
+                        <th scope="row">Código</th>
+                        {% for value in codes %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th scope="row">Gráfico</th>
+                        <td><img src="{{ graphic }}" alt=""></td>
+                    </tr>
+                </table>
+            </div>
+        </center>
+        </center>
     </div>
+</div>
 </body>
 
 </html>
