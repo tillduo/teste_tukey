@@ -21,6 +21,9 @@ def hello_world(request):
 def whats_tukey_test(request):
     return render(request, 'whats-tukey-test.html')
 
+def about_tool(request):
+    return render(request, 'about-tool.html')
+
 
 def create_table(request):
     global k, n, alfa, q, table
