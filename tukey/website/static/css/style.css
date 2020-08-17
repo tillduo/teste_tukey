@@ -16,10 +16,27 @@ body {
     border: 1px solid rgb(160, 160, 160);
 }
 
+.table th {
+    width: 100px;
+}
+
+.table td {
+    width: 100px;
+}
+
+.table td img {
+    width: 100%;
+}
+
 #do-test {
     color: #EEEEEE;
 }
 
 #navbar-home {
     margin-bottom: 15px;
+}
+
+.grafic {
+    width: 100%;
+    height: auto;
 }

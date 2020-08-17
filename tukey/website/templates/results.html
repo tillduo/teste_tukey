@@ -159,20 +159,20 @@
                 </table>
                 <table class="table">
                     <tr>
-                        <th scope="row">Média</th>
+                        <th scope="row"> Média </th>
                         {% for value in descending_averages %}
                             <td>{{ value }}</td>
                         {% endfor %}
                     </tr>
                     <tr>
-                        <th scope="row">Código</th>
+                        <th scope="row"> Código </th>
                         {% for value in codes %}
                             <td>{{ value }}</td>
                         {% endfor %}
                     </tr>
                     <tr>
                         <th scope="row">Gráfico</th>
-                        <td><img src="{{ graphic }}" alt=""></td>
+                        <td  colspan="{{ columns }}"><img class="grafic" src="../static/images/grafic.png" alt=""></td>
                     </tr>
                 </table>
             </div>

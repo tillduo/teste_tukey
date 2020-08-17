@@ -56,7 +56,7 @@ def calcule_tukey(request):
     table_differences = generate_matrix_differences(k)
     descending_averages = get_descending_averages(average)
     codes = define_averages_code(descending_averages, k, hsd)
-    graphic = None #generate_graphic(average)
+    generate_graphic(descending_averages)
 
     data = {'k': k,
             'n': n,
@@ -70,7 +70,7 @@ def calcule_tukey(request):
             'descending_averages': descending_averages,
             'variance': variance,
             'mq_in': mq_in,
-            'graphic': graphic}
+            'columns': len(average)}
 
     return render(request, 'results.html', data)
 
@@ -114,12 +114,12 @@ def generate_matrix_differences(k):
             if first:
                 row.append('Média T{}'.format(i + 1))
             else:
-                difference = average[j-1] - average[i]
+                difference = np.around(average[j-1] - average[i], 3)
                 if((j-1) <= i):
                     difference = '-'
                 else:
                     if (difference < 0):
-                        difference = difference * (-1)
+                        difference = np.around(difference * (-1), 3)
 
                 row.append(difference)
 
@@ -226,9 +226,8 @@ def generate_graphic(average):
         index.append(i + 1)
         plt.bar(i + 1, average[i])
   
-    plt.xticks(np.arange(0, len(average) + 2), (index))
+    plt.axis([0, len(average) + 1, 0, max(average) + 1])
     plt.title("Médias")
     plt.xlabel("Quantidade")
     plt.ylabel("Valor")
-
-    return plt.figure()
+    plt.savefig('website/static/images/grafic.png')
