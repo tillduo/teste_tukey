@@ -1,4 +1,6 @@
 from django.shortcuts import render
+import matplotlib
+matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
@@ -234,3 +236,4 @@ def generate_graphic(average):
     plt.xlabel("Quantidade")
     plt.ylabel("Valor")
     plt.savefig('website/static/images/grafic.png')
+    plt.close()
