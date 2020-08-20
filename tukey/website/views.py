@@ -142,17 +142,18 @@ def get_descending_averages(average):
 
 def define_averages_code(descending_averages, k, hsd):
     previous_codes = list(string.ascii_lowercase)
-    codes = []
+    codes = [''] * k
 
-    for i in range(k):
-        codes.append('') # preenche o array de códigos com "vazio" em cada elemento
+    for i in range(k): # pega todos os elementos, começando do
+        if i < k:
+            codes[i] = codes[i] + previous_codes[0]
+        for j in range(i+1, k): # pega os "proximos" elementos. ex: se o "i" é o 0, aqui o "j" vale 1, 2, 3, 4, 5
+            if descending_averages[i] <= (descending_averages[j]+hsd): #compara o i com cada um dos j
+                codes[j] = codes[j] + previous_codes[0] # aqui ele atribui o código pro índice do elemento "atual"
+            else:
+                codes[j] = codes[j] + ''
+        previous_codes.pop(0)
 
-    #for i in range(k): # pega todos os elementos, começando do primeiro
-        #for j in range(i, k): # pega os "proximos" elementos. ex: se o "i" é o 0, aqui o "j" vale 1, 2, 3, 4, 5
-           # if descending_averages[i] <= (descending_averages[j]+hsd): #compara o i com cada um dos j
-                #codes[i].append(previous_codes[0]) # aqui ele atribui o código pro índice do elemento "atual"
-                #codes[j].append(previous_codes[0]) # e aqui ele atribui o código pro índice que tá comparando
-                #previous_codes.pop(0)
 
     return codes
 
