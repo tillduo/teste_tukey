@@ -3,7 +3,7 @@
 <html lang="pt-br">
 
 <head>
-    <title>Conceito / Teste de Tukey</title>
+    <title>Sobre nós / Teste de Tukey</title>
     <meta charset="utf-8">
     <meta name="author" content="Till Duo">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -18,7 +18,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar-whats-tukey-test">
-    <a class="navbar-brand">O que é o Teste de Tukey?</a>
+    <a class="navbar-brand">Sobre a Ferramenta</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#content-navbar"
             aria-controls="content-navbar" aria-expanded="false" aria-label="Alterna navegação">
         <span class="navbar-toggler-icon"></span>
@@ -35,7 +35,7 @@
                 <a class="nav-link">|</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'about_tool' %}">Sobre a Ferramenta</a>
+                <a class="nav-link" href="{% url 'whats_tukey_test' %}">O que é o Teste de Tukey?</a>
             </li>
         </ul>
         <a class="nav-link" href="/" id="do-test"> Fazer o Teste de Tukey</a>
@@ -46,28 +46,21 @@
     <br>
     <br>
     <h4>
-        O Que é Teste de Tukey?
+        Sobre a Ferramenta
     </h4>
 
     <p>
-        Também conhecido como Teste de Tukey HSD (Teste de Tukey da Diferença Honestamente Significativa), o Teste de
-        Tukey se destaca dos outros métodos de múltiplas por ter uma fácil aplicação e ser poderoso, pois compara todas
-        as médias entre si.
+        Esta ferramenta foi desenvolvida por Igor Lourenço dos Santos e Thalyson Lira Nunes, sob orientação do
+        Professor Doutor Antonio Rafael de Souza Alves Bôsso, para a disciplina de Estágio Supervisionado, do 6º
+        Período do curso de Sistemas de Informação da Universidade Estadual do Tocantins (Unitins).
     </p>
 
-    <blockquote class="blockquote">
-        <p class="mb-0">Uma resposta aproximada para um problema certo vale muito mais do que uma resposta exata para um
-            problema aproximado.</p>
-        <footer class="blockquote-footer">John Wilder <cite title="Source Title">Tukey</cite></footer>
-    </blockquote>
-
     <p>
-        Foi apresentado no artigo <i>“Comparing Individual Means in the Analysis of Variance”</i> (Biometrics. 5 (2):
-        99–114. JSTOR 3001913) em 1949, por John Wilder Tukey, a quem deve-se o nome do teste. Raramente os testes de
-        comparação múltipla são exatos como o Teste de Tukey, por não controlarem o nível de significância
-        <b><i>(Alfa)</i></b>. Utilizando a HSD (que é explicada aqui, no decorrer da execução do teste), é feita a
-        comparação entre as médias, verificando a equivalência entre elas a fim de esclarecer quais as amostras são
-        "iguais" ao serem aplicadas na prática.
+        Para a construção do software, foi necessário que estudássemos a fundo o conceito e a prática do do Teste de
+        Tukey, ANOVA em geral e comparação entre grupos de tratamento, com a ajuda do Prof. Dr. Bôsso. Tendo abstraído
+        isto, procuramos tornar a aplicação do Teste de Tukey mais simples, didática e dinâmica, tornando as etapas do
+        teste mais visíveis, explicando o que acontece em cada uma, seus conceitos e a relevância do que está sendo
+        feito para o resultado final.
     </p>
     <br>
     <br>
@@ -75,6 +68,7 @@
         <a class="btn btn-dark" href="/"> Iniciar o Teste de Tukey</a>
     </center>
 </div>
+
 
 </body>
 

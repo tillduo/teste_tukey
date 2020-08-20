@@ -1,4 +1,6 @@
 from django.shortcuts import render
+import matplotlib
+matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
@@ -20,6 +22,9 @@ def hello_world(request):
 
 def whats_tukey_test(request):
     return render(request, 'whats-tukey-test.html')
+
+def about_tool(request):
+    return render(request, 'about-tool.html')
 
 
 def create_table(request):
@@ -231,3 +236,4 @@ def generate_graphic(average):
     plt.xlabel("Quantidade")
     plt.ylabel("Valor")
     plt.savefig('website/static/images/grafic.png')
+    plt.close()
