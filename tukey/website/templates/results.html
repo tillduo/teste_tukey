@@ -139,13 +139,13 @@
                             {% endif %} {% if forloop.first or forloop.parentloop.first %} {{ cell }}
                                 </th>
                             {% else %} {% if cell > hsd %}
-                                    <p style="color: green"
+                                    <p style="color: red"
                                        id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
                                        name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
                                         {{ cell }}
                                     </p>
                                 {% else %}
-                                    <p style="color: red"
+                                    <p style="color: green"
                                        id="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}"
                                        name="cell_diff_{{ forloop.parentloop.counter|add:'-2' }}_{{ forloop.counter|add:'-2' }}">
                                         {{ cell }}
