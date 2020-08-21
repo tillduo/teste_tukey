@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta name="author" content="Till Duo">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
@@ -22,101 +22,99 @@
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar-home">
-    <a class="navbar-brand">Teste de Tukey</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#content-navbar"
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar-home">
+        <a class="navbar-brand">Teste de Tukey</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#content-navbar"
             aria-controls="content-navbar" aria-expanded="false" aria-label="Alterna navegação">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="content-navbar">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link">|</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'whats_tukey_test' %}">O que é o Teste de Tukey?</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link">|</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'about_tool' %}">Sobre a Ferramenta</a>
-            </li>
-        </ul>
-        <a class="nav-link" href="/" id="do-test"> Fazer o Teste de Tukey</a>
-    </div>
-</nav>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="content-navbar">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link">|</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'whats_tukey_test' %}">O que é o Teste de Tukey?</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link">|</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about_tool' %}">Sobre a Ferramenta</a>
+                </li>
+            </ul>
+            <a class="nav-link" href="/" id="do-test"> Fazer o Teste de Tukey</a>
+        </div>
+    </nav>
 
-<div class="container">
-    <div>
-        <h4>Etapa 1 - Dados Iniciais</h4>
-        <p>
-            Na primeira etapa, você deverá entrar com os primeiros dados necessários para o Teste de Tukey,
-            informando a quantidade de <b>Tratamentos <i>(k)</i></b>, de <b>Repetições <i>(n)</i></b> do experimento e,
-            além disso, escolher a <b>Nível de Significância <i>(Alfa)</i></b>. A entrada dos dados retornará:
-        </p>
-        <ul>
-            <li><b>Grau de Liberdade 1 <i>(GL1)</i></b>: é dado pelo decremento de 1 sobre o número de <b>Tratamentos
-                <i>
-                    (k)</i></b> - <i>(k - 1)</i>;
-            </li>
-            <li><b>Grau de Liberdade 2 <i>(GL2)</i></b>: é dado pela multiplicação de <b>Repetições <i>(n)</i></b> e
-                <b>Tratamentos <i>(k)</i></b>, subtraindo <b>Tratamentos <i>(k)</i></b> - <i>(k &#215; n - k)</i>;
-            </li>
-            <li><b>Amplitude estudentizada <i>(q)</i></b>: seu valor é encontrado em função do número de
-                <b>Tratamentos <i>(k)</i></b> e do número de <b>Graus de Liberdade <i>(GL)</i></b> do resíduo,
-                levando em conta o <b>Nível de Significância <i>(Alfa)</i></b> (em geral 5%).
-            </li>
-        </ul>
+    <div class="container">
+        <div>
+            <h4>Etapa 1 - Dados Iniciais</h4>
+            <p>
+                Na primeira etapa, você deverá entrar com os primeiros dados necessários para o Teste de Tukey,
+                informando a quantidade de <b>Tratamentos <i>(k)</i></b>, de <b>Repetições <i>(n)</i></b> do experimento e,
+                além disso, escolher a <b>Nível de Significância <i>(Alfa)</i></b>. A entrada dos dados retornará:
+            </p>
+            <ul>
+                <li><b>Grau de Liberdade 1 <i>(GL1)</i></b>: é dado pelo decremento de 1 sobre o número de <b>Tratamentos
+                        <i>
+                            (k)</i></b> - <i>(k - 1)</i>;
+                </li>
+                <li><b>Grau de Liberdade 2 <i>(GL2)</i></b>: é dado pela multiplicação de <b>Repetições <i>(n)</i></b> e
+                    <b>Tratamentos <i>(k)</i></b>, subtraindo <b>Tratamentos <i>(k)</i></b> - <i>(k &#215; n - k)</i>;
+                </li>
+                <li><b>Amplitude estudentizada <i>(q)</i></b>: seu valor é encontrado em função do número de
+                    <b>Tratamentos <i>(k)</i></b> e do número de <b>Graus de Liberdade <i>(GL)</i></b> do resíduo,
+                    levando em conta o <b>Nível de Significância <i>(Alfa)</i></b> (em geral 5%).
+                </li>
+            </ul>
 
-        <p>Sabendo disso, insira dos dados: </p>
-    </div>
+            <p>Sabendo disso, insira dos dados: </p>
+        </div>
 
-    <div>
-        <form action="{% url 'create_table' %}" id="create_table" name="create_table">
-            {% csrf_token %}
-            <center>
-                <table class="table">
-                    <tr>
-                        <th scope="row">Tratamentos (k)</th>
-                        <td>
-                            <input class="form-control" type="number" id="k" name="k" min="1" value="{{ k }}"
-                                   required>
-                        </th>
-                        <td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Repetições (n)</th>
-                        <td><input class="form-control" type="number" id="n" name="n" min="2" value="{{ n }}"
-                                   required></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Alfa</th>
-                        <td><input class="form-control" type="text" id="alfa" name="alfa" value="{{ alfa }}"
-                                   list="alfalist" required></td>
-                    </tr>
-                    {% for item in items %}
+        <div>
+            <form action="{% url 'create_table' %}" id="create_table" name="create_table">
+                {% csrf_token %}
+                <center>
+                    <table class="table">
+                        <tr>
+                            <th scope="row">Tratamentos (k)</th>
+                            <td>
+                                <input class="form-control" type="number" id="k" name="k" min="1" value="{{ k }}"
+                                    required>
+                                </th>
+                            <td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Repetições (n)</th>
+                            <td><input class="form-control" type="number" id="n" name="n" min="2" value="{{ n }}"
+                                    required></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Alfa</th>
+                            <td><select class="form-control" name="alfa" id="alfa" required>
+                                    <option value="0.001">0,001</option>
+                                    <option value="0.005">0,005</option>
+                                    <option value="0.01">0,01</option>
+                                    <option value="0.025">0,025</option>
+                                    <option value="0.05">0,05</option>
+                                    <option value="0.1">0,1</option>
+                                </select></td>
+                        </tr>
+                        {% for item in items %}
                         <tr>
                             <th scope="row">GL{{ forloop.counter }}</th>
                             <td>
                                 <center>{{ item }}</center>
                             </td>
                         </tr>
-                    {% endfor %}
-                </table>
-                <button class="btn btn-dark" type="submit">Gerar tabela de tratamentos</button>
-            </center>
-        </form>
-        <datalist id="alfalist">
-            <option value="0.001">
-            <option value="0.005">
-            <option value="0.01">
-            <option value="0.025">
-            <option value="0.05">
-            <option value="0.1">
-        </datalist>
+                        {% endfor %}
+                    </table>
+                    <button class="btn btn-dark" type="submit">Gerar tabela de tratamentos</button>
+                </center>
+            </form>
+        </div>
     </div>
-</div>
 </body>
 
 </html>

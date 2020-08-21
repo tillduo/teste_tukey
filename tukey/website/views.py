@@ -20,8 +20,10 @@ mq_in = None
 def hello_world(request):
     return render(request, 'index.html')
 
+
 def whats_tukey_test(request):
     return render(request, 'whats-tukey-test.html')
+
 
 def about_tool(request):
     return render(request, 'about-tool.html')
@@ -30,9 +32,9 @@ def about_tool(request):
 def create_table(request):
     global k, n, alfa, q, table
 
-    k = int(request.GET['k'])
-    n = int(request.GET['n'])
-    alfa = float(request.GET['alfa'])
+    k = int(request.GET.get('k', 1))
+    n = int(request.GET.get('n', 2))
+    alfa = float(request.GET.get('alfa', 0.05))
 
     items = [k, k * n - k]
     q = get_q(items)
@@ -169,7 +171,7 @@ def get_table_values(request):
     get_data = request.GET.dict()
 
     for j in range(n):
-        for i in range(k):            
+        for i in range(k):
             repetitions[j][i] = float(get_data.get('cell_'+str(j)+'_'+str(i)))
 
     return repetitions
@@ -180,7 +182,7 @@ def get_average(repetitions):
 
     for j in range(k):
         averages = []
-        for i in [cell[j] for cell in repetitions]:           
+        for i in [cell[j] for cell in repetitions]:
             averages.append(float(i))
         entry_data_average.append(np.mean(averages))
 
@@ -208,7 +210,7 @@ def get_mq():
 def get_hsd():
     hsd = (float(q) * (np.sqrt(mq_in/n)))
 
-    return np.around(np.nan_to_num(hsd), 3)    
+    return np.around(np.nan_to_num(hsd), 3)
 
 
 def update_table(repetitions):
@@ -237,7 +239,7 @@ def generate_graphic(average):
     for i in range(len(average)):
         index.append(i + 1)
         plt.bar(i + 1, average[i])
-  
+
     plt.axis([0, len(average) + 1, 0, max(average) + 1])
     plt.title("Médias")
     plt.xlabel("Quantidade")
