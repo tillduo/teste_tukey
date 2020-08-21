@@ -85,7 +85,7 @@
         <br>
 
         <div>
-            <h4>Calculados</h4>
+            <h4>Calculando</h4>
             <p>
                 Com isso, informe-nos os dados coletados, para que seja feita a comparação entre as amostras:
             </p>
@@ -157,6 +157,35 @@
                         </tr>
                     {% endfor %}
                 </table>
+            </div>
+        </center>
+                <br>
+                <h4>Resultados</h4>
+            <p>Agora, por final, teremos os resultados e sua análise:</p>
+            <p>Abaixo são apresentadas as médias e os códigos de equivalência</p>
+            <ul>
+                <li>Os códigos são um símbolo de que um grupo de médias é equivalente. Ex:</li>
+                <li style="text-decoration: none">
+                    <ul>
+                        <li>
+                          Para a média "10", temos os códigos "ab"
+                        </li>
+                        <li>
+                          Para a média "8", temos os códigos "bc"
+                        </li>
+                        <li>
+                          Para a média "5", temos os códigos "cd"
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    No caso acima, as médias 10 e 8 são equivalentes, pois ambas têm o código "b". Mas 10 e 5 não são,
+                    não têm códigos em comum. A equivalência de 10 com 8 e de 8 com 5 não torna 10 e 5 equivalentes.
+                </li>
+            </ul>
+    <p>Estes são os resultados para os dados fornecidos:</p>
+        <center>
+            <div>
                 <table class="table">
                     <tr>
                         <th scope="row"> Média </th>
@@ -170,14 +199,22 @@
                             <td>{{ value }}</td>
                         {% endfor %}
                     </tr>
-                    <tr>
-                        <th scope="row">Gráfico</th>
-                        <td  colspan="{{ columns }}"><img class="grafic" src="../static/images/grafic.png" alt=""></td>
-                    </tr>
                 </table>
             </div>
         </center>
-        </center>
+        <br>
+        <br>
+        <h4>Gráfico</h4>
+        <p>Este é o gráfico das médias dos tratamentos apresentados:</p>
+        <div>
+            <center>
+                <table class="table">
+                    <tr>
+                        <td  colspan="{{ columns }}"><img class="grafic" src="../static/images/grafic.png" alt=""></td>
+                    </tr>
+                </table>
+            </center>
+        </div>
     </div>
 </div>
 </body>
