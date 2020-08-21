@@ -58,7 +58,7 @@ def calcule_tukey(request):
     variance = get_variance(table_values)
     mq_in = get_mq()
     hsd = get_hsd()
-    table_differences = generate_matrix_differences(k)
+    table_differences = generate_matrix_differences(k, average)
     descending_averages = get_descending_averages(average)
     codes = define_averages_code(descending_averages, k, hsd)
     generate_graphic(descending_averages)
@@ -104,7 +104,7 @@ def generate_matrix(n, k):
     return list
 
 
-def generate_matrix_differences(k):
+def generate_matrix_differences(k, average):
     row = []
     list = []
     first = True
@@ -113,11 +113,11 @@ def generate_matrix_differences(k):
         if first:
             row.append('Médias')
         else:
-            row.append('Média T{}'.format(j))
+            row.append('T{}'.format(str(j)+' ['+str(average[j-1]))+']')
 
         for i in range(k):
             if first:
-                row.append('Média T{}'.format(i + 1))
+                row.append('T{}'.format(str(i + 1)+' ['+str(average[i])+']'))
             else:
                 difference = np.around(average[j-1] - average[i], 3)
                 if((j-1) <= i):
@@ -145,15 +145,21 @@ def define_averages_code(descending_averages, k, hsd):
     codes = [''] * k
 
     for i in range(k): # pega todos os elementos, começando do
-        if i < k:
+        if i == 0:
             codes[i] = codes[i] + previous_codes[0]
-        for j in range(i+1, k): # pega os "proximos" elementos. ex: se o "i" é o 0, aqui o "j" vale 1, 2, 3, 4, 5
-            if descending_averages[i] <= (descending_averages[j]+hsd): #compara o i com cada um dos j
-                codes[j] = codes[j] + previous_codes[0] # aqui ele atribui o código pro índice do elemento "atual"
-            else:
-                codes[j] = codes[j] + ''
-        previous_codes.pop(0)
 
+        if codes[i][-0:] != codes[i-1][-0:]:
+            if i < k:
+                codes[i] = codes[i] + previous_codes[0]
+            for j in range(i+1, k): # pega os "proximos" elementos. ex: se o "i" é o 0, aqui o "j" vale 1, 2, 3, 4, 5
+                if descending_averages[i] <= (descending_averages[j]+hsd): #compara o i com cada um dos j
+                    codes[j] = codes[j] + previous_codes[0] # aqui ele atribui o código pro índice do elemento "atual"
+                else:
+                    codes[j] = codes[j] + ''
+            previous_codes.pop(0)
+
+    if codes[0] == 'aa':
+        codes[0] = 'a'
 
     return codes
 
